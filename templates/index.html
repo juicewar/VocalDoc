@@ -1,7 +1,83 @@
-<!doctype html>
-<title>Upload new File</title>
-<h1>Upload new File</h1>
-<form method=post enctype=multipart/form-data action=/uploader>
-  <input type=file name=file>
-  <input type=submit value=Upload>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MediaCapture and Streams API</title>
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+    <header>
+        <h1>Speak into the microphone and it will be translated</h1>
+    </header>
+    <main>
+        
+        <p><button id="btnStart">START RECORDING</button><br/>
+        <button id="btnStop"">STOP RECORDING</button></p>
+        <audio id="audioRecording" controls></audio>
+        
+    </main>    
+    <script>
+        function processAudioRecording(){
+            console.log(audioRecording);
+        }
+
+        let constraintObj = { 
+            audio: true, 
+            video: false
+        }; 
+        
+        navigator.mediaDevices.getUserMedia(constraintObj)
+        .then(function(mediaStreamObj) {
+            
+            //add listeners for saving audio
+            let start = document.getElementById('btnStart');
+            let stop = document.getElementById('btnStop');
+            let audioSave = document.getElementById('audioRecording');
+            let mediaRecorder = new MediaRecorder(mediaStreamObj);
+            let chunks = [];
+            stop.disabled = true;
+            
+            start.addEventListener('click', (ev)=>{
+                mediaRecorder.start();
+                start.disabled = true;
+                stop.disabled = false;
+                console.log(mediaRecorder.state);
+            })
+
+            stop.addEventListener('click', (ev)=>{
+                mediaRecorder.stop();
+                start.disabled = false;
+                stop.disabled = true;
+                console.log(mediaRecorder.state);
+            });
+
+            mediaRecorder.ondataavailable = function(ev) {
+                chunks.push(ev.data);
+            }
+
+            mediaRecorder.onstop = (ev)=>{
+                let blob = new Blob(chunks, { 'type' : 'audio/mp4;' });
+                chunks = [];
+                let audioURL = window.URL.createObjectURL(blob);
+                audioSave.src = audioURL;
+
+                let data = new FormData()
+                data.append('file', blob, 'file')
+
+                fetch('http://127.0.0.1:5000/uploader', {
+                  method: 'POST',
+                  body: data
+
+                }).then(response => response.json()
+                ).then(json => {
+                  console.log(json)
+                });
+            }
+        })
+        .catch(function(err) { 
+            console.log(err.name, err.message); 
+        });
+        
+    </script>
+</body>
+</html>
