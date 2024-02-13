@@ -11,7 +11,7 @@ def transcribe_audio_file(path):
     with sr.AudioFile(path) as source:
         audio_text = r.listen(source)
         try:
-            return r.recognize_sphinx(audio_text)
+            return r.recognize_google(audio_text)
         except sr.UnknownValueError:
             return "i have no idea what you just tried to say"
 

@@ -31,14 +31,8 @@ def uploader():
         convert_to_wav(saved_path)
 
         # Process the file
-        # transcribed_speech = transcribe_audio_file(saved_path)
-        # transcribed_speech = "yuhh"
-
-
-        # Let the user see the transcribed speech
-        # response = jsonify({'message': transcribed_speech})
-        # return response
-        return jsonify({'message': "file successful!"})
+        transcribed_speech = transcribe_audio_file(saved_path)
+        return jsonify({'message': transcribed_speech})
 
 
 
