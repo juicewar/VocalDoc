@@ -1,17 +1,24 @@
-<html>
-    <head>
-        <title>VocalDoc</title>
-        <script src="static/main.js"></script>
-        <link rel="stylesheet" href="static/style.css">
-    </head>
-    <body>
-        <h1>Speak into the microphone and it will be translated</h1> 
-        <button id="btnStart">START RECORDING</button>
-        <button id="btnStop"">STOP RECORDING</button>
-        <audio id="audioRecording" controls></audio>
-        <button id="btnSubmit">SUBMIT RECORDING</button></p>
+{% extends "base.html" %}
 
-        <h2>What I heard:</h2>
-        <p id="transcribedSpeech"></p>
-    </body>
-</html>
+{% block title %}VocalDoc{% endblock %}
+{% block head %}
+    <script src="static/main.js"></script>
+{% endblock %}
+
+{% block header %}VocalDoc{% endblock %}
+{% block content %}
+    <h2>Speak into the microphone and it will be translated</h1> 
+    <button id="btnStart">START RECORDING</button>
+    <button id="btnStop">STOP RECORDING</button>
+    <p><audio id="audioRecording" controls></audio></p>
+    <p><button id="btnSubmit">SUBMIT RECORDING</button></p>
+
+    <h2>What I heard:</h2>
+    <p id="transcribedSpeech"></p>
+    <hr class="solid">
+    <p>
+        <a href="{{ url_for('login')}}">Login</a> or <a href="{{ url_for('register') }}">register</a> to save your recording.
+    </p>
+    <p style="font-size: small;">All rights reserved © 2024</p>
+{% endblock %}
+    

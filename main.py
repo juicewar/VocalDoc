@@ -1,16 +1,91 @@
-from flask import Flask, request, render_template, send_file, jsonify, flash
-import os
-from flask_cors import CORS
+from app import app, db
+from models import DoctorUser, AdminUser
+from email_handler import sendPasswordResetEmail, protectEmail
+from flask import request, render_template, jsonify, flash, redirect, url_for
+from forms import LoginForm, DoctorRegistrationForm, ResetPasswordForm
 from speech_transcribe import transcribe_audio_file, convert_to_wav
+from flask_login import current_user, login_user, logout_user, login_required, LoginManager, login_manager
 
-app = Flask(__name__)
-CORS(app)
+import os
 
-app.config['UPLOAD_FOLDER'] = 'uploads/'
+login = LoginManager(app)
+login.login_view = 'login'
 
+@login.user_loader
+def load_user(user_id):
+    return DoctorUser.get(user_id) or AdminUser.get(user_id)
+
+@login_required
 @app.route('/')
 def upload_file():
     return render_template('index.html')
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+@app.route('/login', methods=['POST','GET'])
+def login():
+    try:
+        if current_user.is_authenticated:
+            return redirect(url_for('index'))
+    except:
+        pass
+    print("login")
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = DoctorUser.query.filter_by(email=(form.email.data).lower()).first() or  AdminUser.query.filter_by(email=(form.email.data).lower()).first()
+        if user is None or not user.checkPassword(form.password.data):
+            flash('Invalid username or password')
+            return render_template('login.html', form=form, message="Invalid credentials")
+        login_user(user, remember=form.remember.data)
+        if form.usertype.data == 'doctor':
+            return redirect(url_for('index'))
+        else:
+            return redirect(url_for('admin'))
+    return render_template('login.html', form=form, message="Invalid credentials")
+
+@app.route('/register', methods=['POST','GET'])
+def register():
+    form = DoctorRegistrationForm()
+    if form.validate_on_submit():
+        #check database for details - is user pre-registered?
+        #if so change to verified and send email confirmation
+        x = DoctorUser.query.filter_by(email=(form.idnumber.data).lower()).first()
+        if x is not None:
+            x.verified = True
+            x.setPassword("test2test4")
+            with app.app_context():
+                db.create_all()
+                db.session.add(x)
+                db.session.commit()
+                sendPasswordResetEmail(x)
+            return render_template('credentials.html',valid=True, email=protectEmail(x.email))
+        #else send message asking the user to contact the admin at place of work
+        return render_template('credentials.html', valid=False)
+    return render_template('registration.html', form=form)
+
+@app.route('/resetpassword', methods=['POST','GET'])
+def resetpassword(token):
+    user = AdminUser.verify_reset_password_token(token) or DoctorUser.verify_reset_password_token(token)
+    if user is None:
+        return render_template('reset_password.html', valid=False)
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        #check if password has changed
+        if not user.checkPassword(form.password.data):
+            with app.app_context():
+                user.setPassword(form.password.data)
+                user.passwordSet = True
+                db.create_all()
+                db.session.add(user)
+                db.session.commit()
+                flash('Your new password has been set.')
+                return redirect(url_for('login'))
+        else:
+            flash('Password has not been changed.')
+    return render_template('reset_password.html', form=form, token=token, idnumber=user.idnumber, email=user.email)
+        
 
 @app.route('/uploader', methods=['POST'])
 def uploader():
@@ -33,8 +108,6 @@ def uploader():
         # Process the file
         transcribed_speech = transcribe_audio_file(saved_path)
         return jsonify({'message': transcribed_speech})
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

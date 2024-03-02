@@ -1,5 +1,11 @@
+body { color: black; 
+	background-color: #818181;
+	font: 24px Trebuchet MS, sans-serif;  
+	/*line-height: 2.5;*/
+	text-align: center;
+}
+	
 h1 {
-    font-family: "Comic Sans MS";
     size: 50px;
     text-align: center
 }

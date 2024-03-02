@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Registration{% endblock %}
+{% block header %}Register: Doctor{% endblock %}
+{% block content %}
+    <div class="input-group" style="margin:auto;">
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div>
+                {{ form.forename(placeholder="Forename") }}<br>
+                {% for error in form.forename.errors %}
+                    <b><span style="color: pink;">{{error}}</span></b>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.surname(placeholder="Surname") }}<br>
+                {% for error in form.surname.errors %}
+                    <b><span style="color: pink;">{{error}}</span></b>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.idnumber(placeholder="ID Number") }}<br>
+                {% for error in form.idnumber.errors %}
+                    <b><span style="color: pink;">{{error}}</span></b>
+                {% endfor %}
+            </div>
+            <div>
+                {{ form.email(placeholder="Email") }}<br>
+                {% for error in form.email.errors %}
+                    <b><span style="color: pink;">{{error}}</span></b>
+                {% endfor %}
+            </div>
+            <div>
+                {{form.dob.label}}: {{ form.dob() }}
+                {% for error in form.dob.errors %}
+                    <b><span style="color: pink;">{{error}}</span></b>
+                {% endfor %}
+            </div>
+            <p>
+                {{ form.submit() }}
+            </p>
+        </form>
+    </div>
+{% endblock %}
+            
