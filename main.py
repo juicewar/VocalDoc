@@ -15,7 +15,6 @@ login.login_view = 'login'
 def load_user(user_id):
     return DoctorUser.get(user_id) or AdminUser.get(user_id)
 
-@login_required
 @app.route('/')
 def upload_file():
     return render_template('index.html')
@@ -26,11 +25,8 @@ def admin():
 
 @app.route('/login', methods=['POST','GET'])
 def login():
-    try:
-        if current_user.is_authenticated:
-            return redirect(url_for('index'))
-    except:
-        pass
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
     print("login")
     form = LoginForm()
     if form.validate_on_submit():
@@ -47,6 +43,8 @@ def login():
 
 @app.route('/register', methods=['POST','GET'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
     form = DoctorRegistrationForm()
     if form.validate_on_submit():
         #check database for details - is user pre-registered?
@@ -108,6 +106,12 @@ def uploader():
         # Process the file
         transcribed_speech = transcribe_audio_file(saved_path)
         return jsonify({'message': transcribed_speech})
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
