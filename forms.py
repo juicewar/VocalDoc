@@ -17,6 +17,13 @@ class DoctorRegistrationForm(FlaskForm):
     dob = DateField('Date of birth',format='%Y-%m-%d',validators=[InputRequired()])
     submit = SubmitField('Register')
 
+class AdminRegistrationForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(),Length(min=3,max=32),Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Request Password Reset')
+
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(

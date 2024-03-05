@@ -2,7 +2,7 @@ from app import app, db
 from models import DoctorUser, AdminUser
 from email_handler import sendPasswordResetEmail, protectEmail
 from flask import request, render_template, jsonify, flash, redirect, url_for
-from forms import LoginForm, DoctorRegistrationForm, ResetPasswordForm
+from forms import LoginForm, DoctorRegistrationForm, ResetPasswordForm, AdminRegistrationForm
 from speech_transcribe import transcribe_audio_file, convert_to_wav
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager, login_manager
 
@@ -49,10 +49,13 @@ def register():
     if form.validate_on_submit():
         #check database for details - is user pre-registered?
         #if so change to verified and send email confirmation
-        x = DoctorUser.query.filter_by(email=(form.idnumber.data).lower()).first()
+        x = DoctorUser.query.filter_by(idnumber=(form.idnumber.data).lower()).first()
         if x is not None:
             x.verified = True
-            x.setPassword("test2test4")
+            x.email = form.email.data
+            x.forename = form.forename.data
+            x.surname = form.surname.data
+            x.dob = form.dob.data
             with app.app_context():
                 db.create_all()
                 db.session.add(x)
@@ -84,6 +87,26 @@ def resetpassword(token):
             flash('Password has not been changed.')
     return render_template('reset_password.html', form=form, token=token, idnumber=user.idnumber, email=user.email)
         
+@app.route('/admin/register', methods=['POST','GET'])
+def adminregister():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = AdminRegistrationForm()
+    if form.validate_on_submit():
+        #check database for details - is user pre-registered?
+        #if so change to verified and send email confirmation
+        x = AdminUser.query.filter_by(email=(form.email.data).lower()).first()
+        if x is None:
+            x.verified = True
+            x.email = form.email.data
+            x.setpassword(form.password.data)
+            with app.app_context():
+                db.create_all()
+                db.session.add(x)
+                db.session.commit()
+                sendPasswordResetEmail(x)
+        #else send message asking the user to contact the admin at place of work
+    return render_template('registration_admin.html', form=form)
 
 @app.route('/uploader', methods=['POST'])
 def uploader():
