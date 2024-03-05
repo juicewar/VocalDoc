@@ -2,10 +2,39 @@ function processAudioRecording(){
     console.log(audioRecording);
 }
 
+// Show what was actually said
 function displayTranscribedSpeech(text){
     let textTag = document.getElementById("transcribedSpeech");
-    textTag.innerHTML = text;
-    parseMessage(text);
+    textTag.innerHTML = text;    
+}
+
+
+// Display a table of the parsed information
+function displaySpeechTable(text){
+    let patient = parseMessage(text);
+
+    let table = document.getElementById("parsedTable");
+
+    // Clear existing table content
+    table.innerHTML = "";
+
+    // Iterate through patient data and update the table
+    Object.entries(patient).forEach(function([key, value]) {
+        let row = table.insertRow(); // Insert a new row
+        let keyCell = row.insertCell(); // Insert a new cell for key
+        let valueCell = row.insertCell(); // Insert a new cell for value
+
+        // Set content for key and value cells
+        keyCell.textContent = key;
+        valueCell.textContent = value;
+    });
+    
+}
+
+// Will show both what the software understood from the text, as well as the formatted table
+function displaySpeechInfo(text){
+    displayTranscribedSpeech(text);
+    displaySpeechTable(text);
 }
 
 // When parsing the spoken text, the fields are converted into single digit tokens for easy parsing
@@ -28,6 +57,22 @@ function parseMessage(text){
 
     let patientFields = Object.keys(patient);
 
+    // Edge cases where the first word is not a valid field number, ignore.
+    words = text.split(' ');
+    while (words.length > 0){
+        // patient number is an edge case since two words
+        if (words.length > 1 && words[0] + words[1] == "patientnumber") {
+            break;
+
+        // if first word is one of the other valid fields
+        } else if (patient.hasOwnProperty(words[0])) {
+            break;
+        }
+        words.shift();
+    }
+
+    text = words.join(' ');
+
     // Pre process message to be parsed
     for (let i=0; i<patientFields.length; i++){
         text = text.replace(patientFields[i], i);
@@ -36,9 +81,6 @@ function parseMessage(text){
     words = text.split(' ');
     let fieldNumber = null;
     let data = [];
-
-    // dont forget to check edge case when the first word is not a field number
-
     while (words.length > 0){
         if (fieldNumber == null){
             fieldNumber = parseInt(words.shift());
@@ -59,7 +101,7 @@ function parseMessage(text){
         patient[patientFields[fieldNumber]] = data.join(' ');
     }
 
-    console.log(patient);
+    return patient;
     
 }
 
@@ -112,7 +154,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
 
         }).then(response => response.json()
         ).then(json => {
-          displayTranscribedSpeech(json.message)
+          displaySpeechInfo(json.message)
         });
     }
 })

@@ -15,6 +15,41 @@
 
     <h2>What I heard:</h2>
     <p id="transcribedSpeech"></p>
+    <table id="parsedTable">
+        <tr>
+            <td>Patient Number</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Symptoms</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Diagnosis</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Prescription</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Dosage</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Notes</td>
+            <td></td>
+        </tr>
+    </table>
+
     <hr class="solid">
     <p>
         {% if current_user.is_authenticated == False %}
