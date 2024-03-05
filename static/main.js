@@ -5,6 +5,62 @@ function processAudioRecording(){
 function displayTranscribedSpeech(text){
     let textTag = document.getElementById("transcribedSpeech");
     textTag.innerHTML = text;
+    parseMessage(text);
+}
+
+// When parsing the spoken text, the fields are converted into single digit tokens for easy parsing
+// This function checks that the current data is a token or not 
+function isNumberToken(s){
+    return /^\d$/.test(s);
+}
+
+function parseMessage(text){
+    let patient = {
+        "patient number": null,
+        "name": null,
+        "date": null,
+        "symptoms": null,
+        "diagnosis": null,
+        "prescription": null,
+        "dosage": null,
+        "notes": null
+    }
+
+    let patientFields = Object.keys(patient);
+
+    // Pre process message to be parsed
+    for (let i=0; i<patientFields.length; i++){
+        text = text.replace(patientFields[i], i);
+    }
+    
+    words = text.split(' ');
+    let fieldNumber = null;
+    let data = [];
+
+    // dont forget to check edge case when the first word is not a field number
+
+    while (words.length > 0){
+        if (fieldNumber == null){
+            fieldNumber = parseInt(words.shift());
+        } else {
+            // if receiving data for a field
+            if (!isNumberToken(words[0])) {
+                data.push(words.shift());
+            } else {
+                patient[patientFields[fieldNumber]] = data.join(' ');
+                data = [];
+                fieldNumber = null;
+            }
+        }
+    }
+
+    // Save the last information
+    if (data.length > 0) {
+        patient[patientFields[fieldNumber]] = data.join(' ');
+    }
+
+    console.log(patient);
+    
 }
 
 let constraintObj = { 
