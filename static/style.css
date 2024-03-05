@@ -1,23 +1,43 @@
-body { color: black; 
-	background-color: #818181;
-	font: 24px Trebuchet MS, sans-serif;  
-	/*line-height: 2.5;*/
-	text-align: center;
+body {
+    color: black;
+    background-color: #818181;
+    font: 24px Trebuchet MS, sans-serif;
+    text-align: center;
 }
-	
+
 h1 {
-    size: 50px;
-    text-align: center
+    font-size: 50px; /* Correct property is font-size, not size */
+    text-align: center;
+    margin-bottom: 20px; /* Adds space below the h1 */
 }
 
-#btnStart {
+/* Common styles for buttons to avoid repetition */
+.button {
+    font-size: 18px;
+    font-family: Trebuchet MS, sans-serif;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px; /* Adds space around buttons */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
 
+/* Individual button styles */
+#btnStart {
+    background-color: #4CAF50; /* Green */
 }
 
 #btnStop {
-
+    background-color: #f44336; /* Red */
 }
 
 #btnSubmit {
-    
+    background-color: #008CBA; /* Blue */
+}
+
+/* Hover effects for buttons */
+.button:hover {
+    opacity: 0.8; /* Slight transparency on hover */
 }
