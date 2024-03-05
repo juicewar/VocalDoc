@@ -1,43 +1,81 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
-    color: black;
-    background-color: #818181;
-    font: 24px Trebuchet MS, sans-serif;
-    text-align: center;
+    background-color: #e3f2fd; /* Soft blue background */
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
 }
 
-h1 {
-    font-size: 50px; /* Correct property is font-size, not size */
-    text-align: center;
-    margin-bottom: 20px; /* Adds space below the h1 */
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Common styles for buttons to avoid repetition */
 .button {
-    font-size: 18px;
-    font-family: Trebuchet MS, sans-serif;
-    color: white;
+    background-color: #009688; /* Teal for buttons */
+    color: #ffffff;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 10px; /* Adds space around buttons */
-    transition: background-color 0.3s ease; /* Smooth transition for background color */
+    font-size: 16px;
 }
 
-/* Individual button styles */
-#btnStart {
-    background-color: #4CAF50; /* Green */
-}
-
-#btnStop {
-    background-color: #f44336; /* Red */
-}
-
-#btnSubmit {
-    background-color: #008CBA; /* Blue */
-}
-
-/* Hover effects for buttons */
 .button:hover {
-    opacity: 0.8; /* Slight transparency on hover */
+    background-color: #00796b;
+}
+
+.header, .footer {
+    text-align: center;
+    margin: 20px 0;
+}
+
+hr.solid {
+    border-top: 3px solid #bbb;
+}
+
+/* Custom styles for links */
+a {
+    color: #009688; /* Teal color for links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Styling for audio control */
+audio {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Responsive typography */
+h1, h2 {
+    font-weight: 300;
+    color: #005662; /* Dark teal for headers */
+}
+
+p {
+    margin: 10px 0;
+}
+
+/* Medical Images */
+.medical-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 8px;
 }
