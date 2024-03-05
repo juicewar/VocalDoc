@@ -1,23 +1,81 @@
-body { color: black; 
-	background-color: #818181;
-	font: 24px Trebuchet MS, sans-serif;  
-	/*line-height: 2.5;*/
-	text-align: center;
-}
-	
-h1 {
-    size: 50px;
-    text-align: center
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#btnStart {
-
+body {
+    background-color: #e3f2fd; /* Soft blue background */
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
 }
 
-#btnStop {
-
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#btnSubmit {
-    
+.button {
+    background-color: #009688; /* Teal for buttons */
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.button:hover {
+    background-color: #00796b;
+}
+
+.header, .footer {
+    text-align: center;
+    margin: 20px 0;
+}
+
+hr.solid {
+    border-top: 3px solid #bbb;
+}
+
+/* Custom styles for links */
+a {
+    color: #009688; /* Teal color for links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Styling for audio control */
+audio {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Responsive typography */
+h1, h2 {
+    font-weight: 300;
+    color: #005662; /* Dark teal for headers */
+}
+
+p {
+    margin: 10px 0;
+}
+
+/* Medical Images */
+.medical-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+    border-radius: 8px;
 }
