@@ -8,10 +8,10 @@
 {% block header %}VocalDoc{% endblock %}
 {% block content %}
     <h2>Speak into the microphone and it will be translated</h1> 
-    <button id="btnStart">START RECORDING</button>
-    <button id="btnStop">STOP RECORDING</button>
+    <button id="btnStart" class = "button">START RECORDING</button>
+    <button id="btnStop" class = "button">STOP RECORDING</button>
     <p><audio id="audioRecording" controls></audio></p>
-    <p><button id="btnSubmit">SUBMIT RECORDING</button></p>
+    <p><button id="btnSubmit" class = "button">SUBMIT RECORDING</button></p>
 
     <h2>What I heard:</h2>
     <p id="transcribedSpeech"></p>
@@ -59,5 +59,9 @@
         {% endif %}
     </p>
     <p style="font-size: small;">All rights reserved © 2024</p>
+    <div class="footer">
+        <p>Need help? <a href="group19@ucl.ac.uk">Contact Support</a></p>
+    </div>
+    
 {% endblock %}
     
