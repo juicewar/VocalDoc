@@ -104,7 +104,7 @@ def adminregister():
                 db.create_all()
                 db.session.add(x)
                 db.session.commit()
-                sendPasswordResetEmail(x)
+                return redirect(url_for('login'))
         #else send message asking the user to contact the admin at place of work
     return render_template('registration_admin.html', form=form)
 
