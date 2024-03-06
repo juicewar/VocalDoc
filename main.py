@@ -5,7 +5,6 @@ from flask import request, render_template, jsonify, flash, redirect, url_for
 from forms import LoginForm, DoctorRegistrationForm, ResetPasswordForm, AdminRegistrationForm
 from speech_transcribe import transcribe_audio_file, convert_to_wav
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager, login_manager
-
 import os
 
 login = LoginManager(app)
