@@ -45,10 +45,16 @@ class DoctorUser(UserMixin, db.Model):
     verified = db.Column(db.Boolean, nullable=False, default=False)
     passwordSet = db.Column(db.Boolean, nullable=False, default=False)
 
+    @property
+    def name(self):
+        return self.forename + " " + self.surname
+
     def setPassword(self, password):
         self.passwordHash = generate_password_hash(password)
     
     def checkPassword(self, password):
+        if self.passwordHash is None:
+            return False
         return check_password_hash(self.passwordHash,password)
 
     def get_id(self):

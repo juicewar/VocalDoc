@@ -7,6 +7,11 @@
 
 {% block header %}VocalDoc{% endblock %}
 {% block content %}
+    {% if current_user.is_authenticated %}
+        <h1>Welcome back, {{ current_user.forename }}!</h1>
+    {% else %}
+        <h1>Welcome to VocalDoc</h1>
+    {% endif %}
     <h2>Speak into the microphone and it will be translated</h1> 
     <button id="btnStart" class = "button">START RECORDING</button>
     <button id="btnStop" class = "button">STOP RECORDING</button>

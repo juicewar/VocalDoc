@@ -14,12 +14,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir,'app.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or "secret_key_79"
-app.config['MAIL_USERNAME'] = 'kwanea1@yahoo.com'
-app.config['MAIL_PASSWORD'] = 'kwanea1@yahoo.com'
-app.config['MAIL_SERVER'] = 'smtp.mail.yahoo.com'
+app.config['MAIL_USERNAME'] = 'vocaldoc1@gmail.com'
+app.config['MAIL_PASSWORD'] = 'zknkvskwzskqlnry'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = int(465)
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 app.config['ADMINS'] = [app.config['MAIL_USERNAME'], 'anthony.nkyi.23@ucl.ac.uk'] #add your emails here
 
 mail = Mail(app)
