@@ -24,6 +24,17 @@
         {% block content %}{% endblock %}
     </main>
     <footer>
+        <p>
+            {% if current_user.is_authenticated == False %}
+            <a href="{{ url_for('login')}}">Login</a> or <a href="{{ url_for('register') }}">register</a> to save your recording.
+            {% else %}
+            <a href="{{ url_for('logout')}}">Logout</a>
+            {% endif %}
+        </p>
+        <p style="font-size: small;">All rights reserved © 2024</p>
+        <div class="footer">
+            <p>Need help? <a href="group19@ucl.ac.uk">Contact Support</a></p>
+        </div>
         {% block footer %}{% endblock %}
     </footer>
 </html>

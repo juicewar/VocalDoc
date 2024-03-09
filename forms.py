@@ -3,9 +3,8 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateF
 from wtforms.validators import InputRequired, Length, Email, EqualTo, DataRequired
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[InputRequired(),Length(min=3,max=32),Email()])
+    email = StringField('Email or username', validators=[InputRequired(),Length(min=3,max=32)])
     password = PasswordField('Password', validators=[InputRequired(),Length(min=8,max=80)])
-    usertype = SelectField('Log in as:', choices=[('doctor','Doctor'),('admin','Admin')], default='doctor')
     remember = BooleanField('Remember me?')
     submit = SubmitField('Sign in')
 
@@ -18,14 +17,20 @@ class DoctorRegistrationForm(FlaskForm):
     submit = SubmitField('Register')
 
 class AdminRegistrationForm(FlaskForm):
-    email = StringField('Email', validators=[InputRequired(),Length(min=3,max=32),Email()])
+    username = StringField('Username', validators=[InputRequired(),Length(min=3,max=32)])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Request Password Reset')
+    submit = SubmitField('Submit')
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Request Password Reset')
+
+class DoctorCreateForm(FlaskForm):
+    email = StringField('Email', validators=[InputRequired(),Length(min=3,max=32),Email()])
+    idnumber = IntegerField('Doctor ID Number', validators=[InputRequired()])
+    dob = DateField('Date of birth',format='%Y-%m-%d',validators=[InputRequired()])
+    submit = SubmitField('Create Doctor')
