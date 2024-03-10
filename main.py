@@ -99,13 +99,16 @@ def adminregister():
         x = AdminUser.query.filter_by(username=(form.username.data).lower()).first()
         if x is None:
             x = AdminUser()
-            x.username = form.username.data
+            x.username = (form.username.data).lower()
             x.setPassword(form.password.data)
             with app.app_context():
                 db.create_all()
                 db.session.add(x)
                 db.session.commit()
-                return redirect(url_for('login'))
+            db.session.commit()
+            return redirect(url_for('login'))
+        else:
+            flash(f'Admin {form.username.data} already exists.')
         #else send message asking the user to contact the admin at place of work
     return render_template('registration_admin.html', form=form)
 
@@ -126,8 +129,9 @@ def createdoctor():
                     db.create_all()
                     db.session.add(x)
                     db.session.commit()
-                    flash(f'New Doctor (id {form.idnumber.data}) has been created.')
-                    return redirect(url_for('admin'))
+                db.session.commit()
+                flash(f'New Doctor (id {form.idnumber.data}) has been created.')
+                return redirect(url_for('admin'))
             else:
                 flash(f'Doctor (id {form.idnumber.data}) already exists.')
         return render_template('create_doctor.html', form=form)
