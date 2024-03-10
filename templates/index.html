@@ -12,47 +12,48 @@
     {% else %}
         <h1>Welcome to VocalDoc</h1>
     {% endif %}
-    <h2>Speak into the microphone and it will be translated</h1> 
+    <h2>Speak to fill in the fields in the table.</h1> 
     <button id="btnStart" class = "button">START RECORDING</button>
     <button id="btnStop" class = "button">STOP RECORDING</button>
     <p><audio id="audioRecording" controls></audio></p>
-    <p><button id="btnSubmit" class = "button">SUBMIT RECORDING</button></p>
 
     <h2>What I heard:</h2>
     <p id="transcribedSpeech"></p>
     <table id="parsedTable">
         <tr>
-            <td>Patient Number</td>
+            <td>patient number</td>
             <td></td>
         </tr>
         <tr>
-            <td>Name</td>
+            <td>name</td>
             <td></td>
         </tr>
         <tr>
-            <td>Date</td>
+            <td>date</td>
             <td></td>
         </tr>
         <tr>
-            <td>Symptoms</td>
+            <td>symptoms</td>
             <td></td>
         </tr>
         <tr>
-            <td>Diagnosis</td>
+            <td>diagnosis</td>
             <td></td>
         </tr>
         <tr>
-            <td>Prescription</td>
+            <td>prescription</td>
             <td></td>
         </tr>
         <tr>
-            <td>Dosage</td>
+            <td>dosage</td>
             <td></td>
         </tr>
         <tr>
-            <td>Notes</td>
+            <td>notes</td>
             <td></td>
         </tr>
     </table>
+
+    <p><button id="btnSubmit" class="button" disabled=true>SUBMIT DATA</button></p>
 {% endblock %}
     

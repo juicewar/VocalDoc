@@ -6,7 +6,6 @@ from forms import LoginForm, DoctorRegistrationForm, ResetPasswordForm, AdminReg
 from speech_transcribe import transcribe_audio_file, convert_to_wav
 from flask_login import current_user, login_user, logout_user, login_required, LoginManager, login_manager
 import os
-from email_handler import sendPasswordResetEmail, protectEmail
 from forms import DoctorRegistrationForm
 
 login = LoginManager(app)

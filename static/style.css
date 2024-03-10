@@ -29,10 +29,6 @@ footer{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-#btnSubmit {
-    
-}
-
 #parsedTable {
     margin: auto;
     width: 30%;
@@ -67,6 +63,10 @@ footer{
 
 .button:hover {
     background-color: #00796b;
+}
+
+.button:disabled {
+    background-color: lightgray;
 }
 
 .header, .footer {

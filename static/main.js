@@ -13,6 +13,15 @@ function displayTranscribedSpeech(text){
 function displaySpeechTable(text){
     let patient = parseMessage(text);
 
+    if ("patient" in sessionStorage){
+        let existingPatientData = JSON.parse(sessionStorage.getItem("patient"));
+        let combinedPatientData = updateAndMerge(existingPatientData, patient);    
+        patient = combinedPatientData;
+        console.log("just recorded", patient);
+        console.log("previous recorded", existingPatientData);
+        console.log("combinedPatientData", combinedPatientData);
+    }
+    
     let table = document.getElementById("parsedTable");
 
     // Clear existing table content
@@ -28,7 +37,19 @@ function displaySpeechTable(text){
         keyCell.textContent = key;
         valueCell.textContent = value;
     });
-    
+
+    sessionStorage.setItem("patient", JSON.stringify(patient));
+}
+
+// When taking multiple recordings, allow to update fields from multiple takes
+function updateAndMerge(fields1, fields2){
+    let clone = { ...fields1 }
+    Object.entries(fields2).forEach(function([key, value]) {
+        if (value != null){
+            clone[key] = value;
+        }
+    })
+    return clone;
 }
 
 // Will show both what the software understood from the text, as well as the formatted table
@@ -100,7 +121,6 @@ function parseMessage(text){
     if (data.length > 0) {
         patient[patientFields[fieldNumber]] = data.join(' ');
     }
-
     return patient;
     
 }
