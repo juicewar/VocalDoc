@@ -30,7 +30,7 @@ class AdminUser(UserMixin, db.Model):
             admin_id = jwt.decode(token, app.config['SECRET_KEY'],
                             algorithms=['HS256'])['reset_password']
         except:
-            print("\n failure")
+            # print("\n failure")
             return
         return AdminUser.query.get(admin_id)
 
@@ -61,6 +61,7 @@ class DoctorUser(UserMixin, db.Model):
         return self.id
     
     def get_reset_password_token(self, expires_in=600):
+        dir(jwt.encode)
         return jwt.encode(
             {'reset_password': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256')
@@ -72,7 +73,7 @@ class DoctorUser(UserMixin, db.Model):
             id = jwt.decode(token, app.config['SECRET_KEY'],
                             algorithms=['HS256'])['reset_password']
         except:
-            print("\n failure")
+            # print("\n failure")
             return
         return DoctorUser.query.get(id)
 

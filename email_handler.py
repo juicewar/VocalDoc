@@ -14,7 +14,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
     msg.html = html_body
     #sends email asynchronously as not to slow processing of the program
     Thread(target=send_async_email, args=(app, msg)).start()
-    print("email sent")
+    # print("email sent")
 
 def sendPasswordResetEmail(user):
     token = user.get_reset_password_token()

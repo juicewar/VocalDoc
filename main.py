@@ -61,7 +61,7 @@ def register():
                 x.surname = form.surname.data
                 db.session.commit()
             sendPasswordResetEmail(x)
-            print(x.verified, x.forename, x.surname)
+            # print(x.verified, x.forename, x.surname)
             db.session.commit()
             return render_template('credentials.html',valid=True, email=protectEmail(x.email))
         #else send message asking the user to contact the admin at place of work
