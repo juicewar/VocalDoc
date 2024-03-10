@@ -8,19 +8,45 @@ function displayTranscribedSpeech(text){
     textTag.innerHTML = text;    
 }
 
+function showLoadingMessage(){
+    let textTag = document.getElementById("transcribedSpeech");
+    textTag.innerHTML = "Please wait... It may take a moment to trascribe your audio."; 
+}
+
+function parseDisplayedTable(){
+    let table = document.getElementById("parsedTable");
+    patient = {}
+    for (let i=0; i<table.rows.length; i++){
+        let row = table.rows.item(i).cells;
+        patient[row.item(0).innerHTML] = row.item(1).innerHTML;
+    }
+    return patient;
+}
+
+function clearTable(){
+    let table = document.getElementById("parsedTable");
+    for (let i=0; i<table.rows.length; i++){
+        let row = table.rows.item(i).cells.item(1).innerHTML = '';
+    }
+}
+
+function submitData(){
+    if (isAllDataFilled()){
+        alert("data submitted!");
+        clearTable();
+        btnSubmit.disabled = true;
+    } else {
+        alert("error: not all data filled in");
+        btnSubmit.disabled = true;
+    }
+}
 
 // Display a table of the parsed information
 function displaySpeechTable(text){
     let patient = parseMessage(text);
-
-    if ("patient" in sessionStorage){
-        let existingPatientData = JSON.parse(sessionStorage.getItem("patient"));
-        let combinedPatientData = updateAndMerge(existingPatientData, patient);    
-        patient = combinedPatientData;
-        console.log("just recorded", patient);
-        console.log("previous recorded", existingPatientData);
-        console.log("combinedPatientData", combinedPatientData);
-    }
+    let existingPatientData = parseDisplayedTable();
+    let combinedPatientData = updateAndMerge(existingPatientData, patient);    
+    patient = combinedPatientData;
     
     let table = document.getElementById("parsedTable");
 
@@ -36,29 +62,31 @@ function displaySpeechTable(text){
         // Set content for key and value cells
         keyCell.textContent = key;
         valueCell.textContent = value;
+        valueCell.contentEditable = true;
     });
 
-    sessionStorage.setItem("patient", JSON.stringify(patient));
-
     // Allow the doctor to submit if all the fields are filled in
-    if (isAllDataFilled(patient)){
+    if (isAllDataFilled()){
         btnSubmit.disabled = false;
-    }   
+    } else {
+        btnSubmit.disabled = true;
+    }
 }
 
 // When taking multiple recordings, allow to update fields from multiple takes
 function updateAndMerge(fields1, fields2){
     let clone = { ...fields1 }
     Object.entries(fields2).forEach(function([key, value]) {
-        if (value != null){
+        if (value != null && value != '' && fields1.hasOwnProperty(key)){
             clone[key] = value;
         }
     })
     return clone;
 }
 
-function isAllDataFilled(data){
-    return !(Object.values(data).every(x => x === null || x === ''));
+function isAllDataFilled(){
+    patient = parseDisplayedTable();
+    return !(Object.values(patient).some(x => x === null || x === ''));
 }
 
 // Will show both what the software understood from the text, as well as the formatted table
@@ -161,6 +189,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
         mediaRecorder.stop();
         start.disabled = false;
         stop.disabled = true;
+        showLoadingMessage();
         console.log(mediaRecorder.state);
     });
 
