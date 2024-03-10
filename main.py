@@ -31,7 +31,7 @@ def admin():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('upload_file'))
-    print("login")
+    # print("login")
     form = LoginForm()
     if form.validate_on_submit():
         user = DoctorUser.query.filter_by(email=(form.email.data).lower()).first() or AdminUser.query.filter_by(username=(form.email.data).lower()).first()
