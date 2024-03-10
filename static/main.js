@@ -39,6 +39,11 @@ function displaySpeechTable(text){
     });
 
     sessionStorage.setItem("patient", JSON.stringify(patient));
+
+    // Allow the doctor to submit if all the fields are filled in
+    if (isAllDataFilled(patient)){
+        btnSubmit.disabled = false;
+    }   
 }
 
 // When taking multiple recordings, allow to update fields from multiple takes
@@ -50,6 +55,10 @@ function updateAndMerge(fields1, fields2){
         }
     })
     return clone;
+}
+
+function isAllDataFilled(data){
+    return !(Object.values(data).every(x => x === null || x === ''));
 }
 
 // Will show both what the software understood from the text, as well as the formatted table
